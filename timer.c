@@ -30,9 +30,9 @@ void timer0_init()
 		//TCCR0A &= ~(1<<COM0A0);
 		TCCR0A |= 1<<COM0A0;
 		
-		//Prescaler = 64 CS0[2:0]=011
-		TCCR0B |= (1<<CS01) | (1<<CS00);
-		TCCR0B &= ~(1<<CS02);			 
+		//Prescaler = 64 CS0[2:0]=011 (non-inverted)
+		TCCR0B |= (1<<CS01) ;
+		TCCR0B &= ~((1<<CS02) | (1<<CS00));			 
 
 		//the data direction register (DDR) bit corresponding to the OC0A pin must be set in order to enable the output driver.
 		DDRD |= (1<<DDD6);
