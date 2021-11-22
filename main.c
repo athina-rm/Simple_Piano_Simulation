@@ -14,13 +14,13 @@ volatile uint32_t f, time_tracker, newTone;
 
 ISR (TIMER2_COMPA_vect)
 {        
-        if((time_tracker<44445 && time_tracker>0) || newTone){                      
+        if((time_tracker<5556 && time_tracker>0) || newTone){                      
                 newTone=0;
                 //printf("%u\n",f);
                 uint32_t value = (sin(0.0001414285*f*time_tracker)+1)/2*255;
                 OCR0A = value;
                 time_tracker++;
-                if (time_tracker >= 44445){
+                if (time_tracker >= 5556){
                         time_tracker=0;
                 }
         }
