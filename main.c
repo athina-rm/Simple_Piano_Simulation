@@ -13,8 +13,21 @@ volatile uint32_t f, time_tracker, newTone;
 
 
 ISR (TIMER2_COMPA_vect)
-{	
-        time_tracker++;        
+{        
+        if((time_tracker<44445 && time_tracker>0) || newTone){                      
+                newTone=0;
+                //printf("%u\n",f);
+                uint32_t value = (sin(0.0001414285*f*time_tracker)+1)/2*255;
+                OCR0A = value;
+                time_tracker++;
+                if (time_tracker >= 44445){
+                        time_tracker=0;
+                }
+        }
+        else{
+                OCR0A = 255;
+        }
+           
 }
 
 int main (void) 
@@ -47,20 +60,18 @@ int main (void)
                                         break;
                                 case 'b' : f = 493;
                                         break;
-                        }
-                        printf("%u\n",f);
+                        }                        
                 }
-
-                if((t<(pow(10,6)/22.5) && t>0) || newTone){
+                /*if((t < 44445 && t>0) || newTone){                      
                         newTone=0;                        
-                        uint32_t x = (sin(2*3.14*f*21*pow(10,-6)*t)+1)/2*255;
+                        uint32_t x = (sin(0.0001414285*f*t)+1)/2*255;  //2*3.14*22.5*10^-6 = 0.0001414285
                         printf ("%u ",t);
                         printf ("%u\n",x);
                         t+=100;
-                        if(t>=(pow(10,6)/22.5)){
+                        if (t >= 44445){
                                 t=0;
                         }
-                }                     
+                } */                 
                                         
         }
 }
