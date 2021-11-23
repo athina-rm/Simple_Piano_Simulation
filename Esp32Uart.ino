@@ -4,6 +4,7 @@
 //when loading up this sketch press on the Arduino's reset button utill uploaded and visa versa.
 //Tx pin of Esp32 is connected to the Rx pin oo Arduino uno, both are connected to the common ground.
 //upload the program twice open both to open both UART connections
+//To open the webpage use the ip address of the computer.
 
 
 
