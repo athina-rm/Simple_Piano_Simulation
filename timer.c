@@ -5,7 +5,7 @@
 void timer2_init() 
 {
 		TCNT2=0;
-	//Timer2 CTC mode (WGM22:0 = 2)
+	//Timer2 CTC mode (WGM22:0 = 2)         
 		TCCR2B &= ~(1<<WGM22);
 		TCCR2A |= (1<<WGM21);		
 		TCCR2A &= ~(1<<WGM20);
@@ -27,12 +27,12 @@ void timer0_init()
 		TCCR0B &= ~(1<<WGM02);
 		TCCR0A |= (1<<WGM01) | (1<<WGM00);
 		TCCR0A |= (1<<COM0A1);
-		//TCCR0A &= ~(1<<COM0A0);
-		TCCR0A |= 1<<COM0A0;
+		TCCR0A &= ~(1<<COM0A0);
+		//TCCR0A |= 1<<COM0A0;
 		
-		//Prescaler = 64 CS0[2:0]=011 (non-inverted)
-		TCCR0B |= (1<<CS01) ;
-		TCCR0B &= ~((1<<CS02) | (1<<CS00));			 
+		//Prescaler = 1 CS0[2:0]=001
+		TCCR0B |= (1<<CS00) ;
+		TCCR0B &= ~((1<<CS02) | (1<<CS01));	 
 
 		//the data direction register (DDR) bit corresponding to the OC0A pin must be set in order to enable the output driver.
 		DDRD |= (1<<DDD6);
