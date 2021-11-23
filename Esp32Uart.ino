@@ -14,8 +14,8 @@
 
 //For wifi connection
 #define WIFI_INTERVAL 500
-#define WIFI_SSID "#Telia-CDC9A8"
-#define WIFI_PASS "a6G&3@e=f7(FCa3H"
+#define WIFI_SSID "*********" //use your internet ssid
+#define WIFI_PASS "***********" // and password
 
 #include "WiFifunctions.h"
 
