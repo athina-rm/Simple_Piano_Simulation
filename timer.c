@@ -2,7 +2,7 @@
 
 #include "timer.h"
 
-void timer2_init() 
+void timer2_init()    //to get an interrupt at 44kHz
 {
 		TCNT2=0;
 	//Timer2 CTC mode (WGM22:0 = 2)         
@@ -19,7 +19,7 @@ void timer2_init()
 		TIMSK2 |= (1<<OCIE2A);		
 }
 
-void timer0_init() 
+void timer0_init() 			//to generate PWM
 {
 		TCNT0=0;			//initialize timer0 with value 0
 

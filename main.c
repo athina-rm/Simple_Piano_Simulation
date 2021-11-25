@@ -9,7 +9,7 @@
 #include "timer.h"
 #include "pushbutton.h"
 
-volatile uint32_t f, time_tracker, newTone,t;
+volatile uint32_t f, time_tracker, newTone, writeDutycycle;
 const static uint32_t sine_values[223] ={127,131,134,138,141,145,149,152,156,159,163,166,169,173,176,179,183,186,189,192,195,198,201,204,207,
 210,213,215,218,220,223,225,227,229,232,234,236,237,239,241,242,244,245,247,248,249,250,251,252,252,253,253,254,254,254,254,254,254,254,254,253,
 253,252,252,251,250,249,248,247,245,244,243,241,239,238,236,234,232,230,227,225,223,220,218,215,213,210,207,204,202,199,196,193,189,186,183,180,
@@ -25,19 +25,19 @@ ISR (TIMER2_COMPA_vect)                         //configured to occur every 22.5
                 printf("1 sec\n");
                 t=0;
         }*/
-        if((time_tracker<44445 && time_tracker>0) || newTone){                      
+        if((time_tracker<44445 && time_tracker>0) || newTone){        //goes into the statement when newtone is selected time_tracker and less than 1 sec        
                 newTone=0;
                 //uint32_t i=(time_tracker*(f/200))%223;
                 //printf ("%u : ",i);
-                OCR0A = sine_values[(time_tracker*(f/200))%223];
+                writeDutycycle=1;                
                 //printf ("%u \n",sine_values[i]);                        
                 time_tracker++;
-                if (time_tracker > 44444){
-                        time_tracker=0;
+                if (time_tracker > 44444){                      //the frequency has been being played for 1 second
+                        time_tracker=0;                         //so that the condition will be false when ISR is executed next time.
                 }                               
         }
         else{
-                OCR0A = 0;
+                OCR0A = 0;                                      //no frequency is transmitted
         }    
 }
 
@@ -49,9 +49,8 @@ int main (void)
         char input;
         //uint32_t t=0;
                
-        //generating a table for one sine wave with frequency 200Hz-min freq expected with samples at 44.44kHz/22.5us       
-        //uint32_t sine_values[445];
-            
+        //generating a lookuptable for one sine wave with frequency 200Hz-min freq expected with samples at 44.44kHz/22.5us    
+                
         /*f=200;
         uint32_t sine_values[223];
         double sampling_pd = 22.5*pow(10,-6);
@@ -75,12 +74,17 @@ int main (void)
         sei();                                  //status register (SREG) – I: Global Interrupt Enable in the is set (one) to enable interrupts
         
         while (1) {
+                if (writeDutycycle){
+                        writeDutycycle=0;
+                        OCR0A = (sin(0.000138*f*time_tracker)+1)/2*255;
+                        //OCR0A = sine_values[(time_tracker*(f/200))%223];     //selects the instantaneous sine value from the array
+                }
                 if (UCSR0A & (1 << RXC0)){
-                        input=UDR0;                        
+                        input=UDR0;                        //takes input through UART from the esp32
                         newTone=1;
                         //t=1;
                         switch(input){
-                                case 'c' : f=261;    //f=261;
+                                case 'c' : f=1000;    //f=261;
                                         break;
                                 case 'd' : f = 294;
                                         break;
@@ -92,19 +96,9 @@ int main (void)
                                         break;
                                 case 'a' : f = 440;
                                         break;
-                                case 'b' : f = 1000; //f = 493;
+                                case 'b' : f = 493;
                                         break;
                         }                        
-                }
-                /*if((t < 5000 && t>0) || newTone){                      
-                        newTone=0;                        
-                        uint32_t i=(t*(f/200))%223;
-                        printf ("%u : ",i);
-                        printf ("%u \n",sine_values[i]);                        
-                        t+=1;
-                        if (t >=5000){
-                                t=0;
-                        }
-                }*/                                        
+                }                                   
         }
 }
