@@ -80,19 +80,19 @@ int main (void)
                         newTone=1;
                         //t=1;
                         switch(input){
-                                case 'c' : f=261;    //f=261;
+                                case 'C' : f=261;    //f=261;
                                         break;
-                                case 'd' : f = 294;
+                                case 'D' : f = 294;
                                         break;
-                                case 'e' : f=329;
+                                case 'E' : f=329;
                                         break;
-                                case 'f' : f = 349;
+                                case 'F' : f = 349;
                                         break;
-                                case 'g' : f = 392;
+                                case 'G' : f = 392;
                                         break;
-                                case 'a' : f = 440;
+                                case 'A' : f = 440;
                                         break;
-                                case 'b' : f = 1000; //f = 493;
+                                case 'B' : f = 1000; //f = 493;
                                         break;
                         }                        
                 }
